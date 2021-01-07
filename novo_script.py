@@ -3,6 +3,9 @@
 import random 
 import argparse 
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+
 # Código para probabilidades de mutação
 
 
@@ -50,26 +53,32 @@ if  __name__ == "__main__":
     prob_mutar = args.prob_mutar
     prob_gc = args.prob_gc
 
-  
-   with open('output.fasta', 'w') as output_handle:
-     SeqIO.write(seq_dna,output_handle, 'fasta')
-
+    mutatedSeqs = []
 
     with open(args.fasta_file, 'rU') as fastahandle:
       for seq_record in SeqIO.parse(fastahandle, 'fasta'):
        print(seq_record.id)
-       verificacao = substituicao(seq_record.seq,prob_mutar,prob_gc)
-       if len(verificacao) == len(seq_record.seq):
-         print("Está correto")
+       mutatedSequence = substituicao(seq_record.seq,prob_mutar,prob_gc)
+       myID=seq_record.id + '_mut'
+       print(myID)
+       if len(mutatedSequence) == len(seq_record.seq):
+           seqObj=SeqRecord(
+                   Seq(mutatedSequence),
+                   id=myID,
+                   name=myID,
+                   description='mutated sequence based on: '+myID
+                   )
+           mutatedSeqs.append(seqObj)
        else:
-         print("Não está correto")
+           print("Não está correto, o comprimento da sequencia original nao é o mesmoda sequencia mutada")
 
-
-       print(verificacao)
+       print(mutatedSeqs)
     
         
 
 
+    with open('output.fasta', 'w') as output_handle:
+        SeqIO.write(mutatedSeqs,output_handle, 'fasta')
 
 
 
