@@ -50,6 +50,11 @@ if  __name__ == "__main__":
     prob_mutar = args.prob_mutar
     prob_gc = args.prob_gc
 
+  
+   with open('output.fasta', 'w') as output_handle:
+     SeqIO.write(seq_dna,output_handle, 'fasta')
+
+
     with open(args.fasta_file, 'rU') as fastahandle:
       for seq_record in SeqIO.parse(fastahandle, 'fasta'):
        print(seq_record.id)
