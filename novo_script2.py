@@ -53,9 +53,7 @@ if  __name__ == "__main__":
     prob_mutar = args.prob_mutar
     prob_gc = args.prob_gc
 
-    mutatedSeqs = []
-
-    with open(args.fasta_file, 'rU') as fastahandle:
+    with open(args.fasta_file, 'rU') as fastahandle, open ('output2.fasta', 'w') as output_handle:
       for seq_record in SeqIO.parse(fastahandle, 'fasta'):
        print(seq_record.id)
        mutatedSequence = substituicao(seq_record.seq,prob_mutar,prob_gc)
@@ -68,20 +66,6 @@ if  __name__ == "__main__":
                    name=myID,
                    description='mutated sequence based on: '+myID
                    )
-           mutatedSeqs.append(seqObj)
+           SeqIO.write(seqObj,output_handle, 'fasta')
        else:
            print("Não está correto, o comprimento da sequencia original nao é o mesmoda sequencia mutada")
-
-       print(mutatedSeqs)
-    
-        
-
-
-    with open('output.fasta', 'w') as output_handle:
-        SeqIO.write(mutatedSeqs,output_handle, 'fasta')
-
-
-
-
-
-
